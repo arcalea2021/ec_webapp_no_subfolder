@@ -2,15 +2,19 @@ import app_style as sty
 
 # Section to update client's information
 # Define client brand and client brand industry - replace with different QMAs
-client = 'a brand'  # Client name here
+client = 'Ellis Corporation'  # Client name here
 client_industry = 'Cannabis'  # Client industry here
 client_industry_for_title = 'Cannabis Industry'
 
 FILES_LOCATION = 'data/'
 
-# Files from pre processing have the objective of reducing the data stored in the server and help app run faster
-sov_input_file_name = 'CANNSOV_input_for_SRF_new_12-13-21_2.parquet'  # this is a parquet file from pre-processing
-kwd_dist_file_name = 'keyword_distribution.parquet'
+# Files from pre-processing have the objective of reducing the data stored in the server and help app run faster
+sov_branded_input_file_name = 'EC_branded_sov_output.csv'  # this is a parquet file from pre-processing
+sov_heating_input_file_name = 'EC_heating_sov_output.csv'
+sov_laundry_input_file_name = 'EC_laundry_sov_output.csv'
+sov_wastewater_input_file_name = 'EC_wastewater_sov_output.csv'
+
+kwd_dist_file_name = 'EC_kw_dist_output.csv'
 data_file_name = 'data.parquet'  # this is a parquet file from pre-processing
 domain_file_name = 'Cannabis_SRF_Domains - Domain Type Breakdown.csv'
 

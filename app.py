@@ -32,8 +32,16 @@ with st.container():
 
 # ##################### Reading Data ###################################################################################
 with st.container():
-    sov_df = pd.read_parquet(txt.FILES_LOCATION + txt.sov_input_file_name)
-    keyword_distribution = pd.read_parquet(txt.FILES_LOCATION + txt.kwd_dist_file_name)
+
+    sov_branded_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_branded_input_file_name)
+    sov_heating_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_heating_input_file_name)
+    sov_laundry_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_laundry_input_file_name)
+    sov_wastewater_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_wastewater_input_file_name)
+
+    sov_df = pd.concat([sov_branded_df, sov_heating_df, sov_laundry_df, sov_wastewater_df], ignore_index=True)
+
+    keyword_distribution = pd.read_csv(txt.FILES_LOCATION + txt.kwd_dist_file_name)
+
     data = pd.read_parquet(txt.FILES_LOCATION + txt.data_file_name)
     type_info = pd.read_csv(txt.FILES_LOCATION + txt.domain_file_name)
     kw_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.kw_rd_data_file_name)
@@ -67,27 +75,35 @@ with st.sidebar:
 # ########################################################## SHARE OF VOICE ############################################
 st.markdown('<h4 style=' + sty.style_string + '> Share of Voice </h4>', unsafe_allow_html=True)
 with st.expander("Click to Expand/Collapse"):
-    # READING NEW SOV DATA - START
-    sov_df['CTR'] = sov_df['CTR'].fillna(0)
-    sov_df['Clicks'] = sov_df['Clicks'].fillna(0)
-    # AWYSS PENDING COMMENTS: SHOULD WE CHANGE THIS TO THE NEW METHODOLOGY - USING IMPUTED CPS?
-    sov_df["Est. Mo Clicks"] = sov_df['CTR'] * sov_df['Clicks']  # Angela please check here, is this correct? this is the metric being used to calculate SOV
-    # READING NEW SOV DATA - END
-
-    # Overall SOV
-    st.markdown('<p style=' + sty.style_string + '> <b> Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
     st.markdown(txt.sov_paragraph1, unsafe_allow_html=True)
-    overall_sov = func.particular_sov_get_srf_barchart(sov_df)
-    st.plotly_chart(overall_sov, use_container_width=True, config=sty.plotly_config_dict)
+
+    st.markdown('<p style=' + sty.style_string + '> <b> Branded Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
+
+    branded_sov = func.particular_sov_get_srf_barchart(sov_branded_df)
+    st.plotly_chart(branded_sov, use_container_width=True, config=sty.plotly_config_dict)
+
+    st.markdown('<p style=' + sty.style_string + '> <b> Heating Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
+    heating_sov = func.particular_sov_get_srf_barchart(sov_heating_df)
+    st.plotly_chart(heating_sov, use_container_width=True, config=sty.plotly_config_dict)
+
+    st.markdown('<p style=' + sty.style_string + '> <b> Laundry Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
+    laundry_sov = func.particular_sov_get_srf_barchart(sov_laundry_df)
+    st.plotly_chart(laundry_sov, use_container_width=True, config=sty.plotly_config_dict)
+
+    st.markdown('<p style=' + sty.style_string + '> <b> Wastewater Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
+    wastewater_sov = func.particular_sov_get_srf_barchart(sov_wastewater_df)
+    st.plotly_chart(wastewater_sov, use_container_width=True, config=sty.plotly_config_dict)
 
 # ######################################################## KEYWORD DISTRIBUTION  #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Distribution </h4>', unsafe_allow_html=True)
 
 with st.expander("Click to Expand/Collapse"):
+
+    st.dataframe(keyword_distribution)
+
     # READING KWD Distribution Data - START
-    keyword_distribution.rename(columns={'variable': 'Position', 'group_total': 'value'}, inplace=True)
-    keyword_distribution['company_total'] = keyword_distribution.groupby(['Company'])['value'].transform('sum')
-    keyword_distribution = keyword_distribution.sort_values(by=['company_total', 'variable_order'])
+    keyword_distribution['company_total'] = keyword_distribution.groupby(['Company'])['group_total'].transform('sum')
+    keyword_distribution = keyword_distribution.sort_values(by=['company_total', 'variable order'])
     kw_dist_plot_ft = func.keyword_distribution_barchart(keyword_distribution, 'Cannabis Industry')
     # READING KWD Distribution Data - END
 

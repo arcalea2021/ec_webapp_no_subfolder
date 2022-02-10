@@ -124,10 +124,9 @@ def particular_sov_get_srf_barchart(df_, top_n=10):
     Returns:
         fig_sov_: plotly barchart
     """
-    df_ = df_.groupby(['Domain']).agg({'Est. Mo Clicks': 'sum'})
+    df_ = df_.groupby(['Domain']).agg({'SOV': 'sum'})
+    df_ = df_.sort_values(by='SOV', ascending=False)
     df_.reset_index(inplace=True)
-    df_.sort_values(by="Est. Mo Clicks", inplace=True, ascending=False)
-    df_['SOV'] = df_["Est. Mo Clicks"] / df_["Est. Mo Clicks"].sum()
     df_ = df_.iloc[:top_n, :]
 
     # Bar Chart
@@ -142,8 +141,8 @@ def particular_sov_get_srf_barchart(df_, top_n=10):
 
 
 def keyword_distribution_barchart(kw_df, title_):
-    fig_ = px.bar(kw_df, x="Company", y="value", color="Position",
-                  custom_data=['Branded %', 'Non-Branded %', 'Position'],
+    fig_ = px.bar(kw_df, x="Company", y="group_total", color="KW Group",
+                  custom_data=['Branded %', 'Non-Branded %', 'KW Group'],
                   title="Keyword Distribution - " + title_,
                   color_discrete_sequence=['#D7E6F2', '#9EC1DE', '#324680'], height=500, width=800)
 
