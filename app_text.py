@@ -3,8 +3,8 @@ import app_style as sty
 # Section to update client's information
 # Define client brand and client brand industry - replace with different QMAs
 client = 'Ellis Corporation'  # Client name here
-client_industry = 'Cannabis'  # Client industry here
-client_industry_for_title = 'Cannabis Industry'
+client_industry = 'Industrial Water Treatment Solutions'  # Client industry here
+client_industry_for_title = 'Industrial Water Treatment Solutions'
 
 FILES_LOCATION = 'data/'
 
