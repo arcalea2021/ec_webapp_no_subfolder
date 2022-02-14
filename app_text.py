@@ -18,7 +18,7 @@ kwd_dist_file_name = 'EC_kw_dist_output.csv'
 data_file_name = 'data.parquet'  # this is a parquet file from pre-processing
 domain_file_name = 'Cannabis_SRF_Domains - Domain Type Breakdown.csv'
 
-kw_rd_data_file_name = 'EC_wa_regression_analysis_keyword_output.csv'
+kw_rd_data_file_name = 'EC_KW_Analysis-RegressionData.csv'
 rd_rd_data_file_name = 'EC_RD_Analysis-RegressionData.csv'
 
 # Text for header
