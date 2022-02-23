@@ -41,3 +41,6 @@ arc_colors = ["#df9567", "#87a926", "#3f74c0", "#9e6cb7", "#6f92c3", "#481362", 
               "#b7c8e1"]
 
 arc_colors2 = ['#A34F9A', '#0D7BBD', '#56AEE3', '#2C4784', '#EDF2F9', '#4A4A4A', '#1C2D54']
+
+figure_height = 7.5
+figure_width = 10

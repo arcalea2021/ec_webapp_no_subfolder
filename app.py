@@ -43,7 +43,7 @@ with st.container():
     keyword_distribution = pd.read_csv(txt.FILES_LOCATION + txt.kwd_dist_file_name)
 
     data = pd.read_parquet(txt.FILES_LOCATION + txt.data_file_name)
-    type_info = pd.read_csv(txt.FILES_LOCATION + txt.domain_file_name)
+    # type_info = pd.read_csv(txt.FILES_LOCATION + txt.domain_file_name)
     kw_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.kw_rd_data_file_name)
     rd_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.rd_rd_data_file_name)
 
@@ -79,15 +79,15 @@ with st.expander("Click to Expand/Collapse"):
 
     st.markdown('<p style=' + sty.style_string + '> <b> Branded Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
 
-    branded_sov = func.particular_sov_get_srf_barchart(sov_branded_df)
+    branded_sov = func.particular_sov_get_srf_barchart(sov_branded_df, title_=txt.client_short_name+'_branded_sov')
     st.plotly_chart(branded_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Heating Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
-    heating_sov = func.particular_sov_get_srf_barchart(sov_heating_df)
+    heating_sov = func.particular_sov_get_srf_barchart(sov_heating_df, title_=txt.client_short_name+'_heating_sov')
     st.plotly_chart(heating_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Laundry Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
-    laundry_sov = func.particular_sov_get_srf_barchart(sov_laundry_df)
+    laundry_sov = func.particular_sov_get_srf_barchart(sov_laundry_df, title_=txt.client_short_name+'_laundry_sov')
     st.plotly_chart(laundry_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Wastewater Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
@@ -143,19 +143,19 @@ with st.expander("Click to Expand/Collapse"):
             '<p style=' + sty.style_string + '>' + 'The monthly search volume (MSV) for this cluster is <b>' + "{0:,.0f}".format(cluster_msv_value) + '</b>.' + '</p>',
             unsafe_allow_html=True)
 
-        domain_type_list = list(df_selected_cluster['Domain Type'].unique())
-        domain_type_list = sorted(domain_type_list)
+        # domain_type_list = list(df_selected_cluster['Domain Type'].unique())
+        # domain_type_list = sorted(domain_type_list)
 
         # Plot ratios using pie charts
-        st.markdown(txt.kwd_clustering_ratios_paragraph1, unsafe_allow_html=True)
-        st.markdown(txt.kwd_clustering_ratios_paragraph2, unsafe_allow_html=True)
+        # st.markdown(txt.kwd_clustering_ratios_paragraph1, unsafe_allow_html=True)
+        # st.markdown(txt.kwd_clustering_ratios_paragraph2, unsafe_allow_html=True)
 
-        both_ratios = func.calculate_both_ratios(df_selected_cluster, domain_type_list)
+        # both_ratios = func.calculate_both_ratios(df_selected_cluster, domain_type_list)
 
-        ratios_fig = func.get_ratios_chart(both_ratios)
-        st.plotly_chart(ratios_fig, use_container_width=True, config=sty.plotly_config_dict)
+        # ratios_fig = func.get_ratios_chart(both_ratios)
+        # st.plotly_chart(ratios_fig, use_container_width=True, config=sty.plotly_config_dict)
         
-        st.table(data=type_info)
+        # st.table(data=type_info)
 
         # Calculate SOV by Domain
         selected_cluster_sov_fig = func.get_sov_barchart(df_selected_cluster)
@@ -205,7 +205,7 @@ with st.expander("Click to Expand/Collapse"):
 
     all_domain_type_list = list(data['Domain Type'].unique())
 
-    color_dict = {domain_type_list[i]: sty.arc_colors[i] for i in range(len(domain_type_list))}
+    # color_dict = {domain_type_list[i]: sty.arc_colors[i] for i in range(len(domain_type_list))}
 
     fig_dependence_overall = func.get_dependence_plot(data, feature_x, feature_x_shap, color_dict, hover_data)
 
@@ -290,12 +290,22 @@ st.markdown('<h4 style=' + sty.style_string + '> Referring Domains and Backlinks
 with st.expander("Click to Expand/Collapse"):
 
     st.markdown('<h5 style=' + sty.style_string + '> Backlinks vs Traffic </h5>', unsafe_allow_html=True)
-    backlinks_fig, backlinks_result = func.get_regression_plot(rd_rd_data, 'Total Backlinks', 'Organic Traffic')
+    backlinks_fig, backlinks_result = func.get_regression_plot(rd_rd_data, 'Total Backlinks', 'Organic Traffic',
+                                                               title_=txt.client_short_name + '_backlinks')
     st.plotly_chart(backlinks_fig, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<h5 style=' + sty.style_string + '> Referring Domains vs Traffic </h5>', unsafe_allow_html=True)
-    rd_fig, rd_result = func.get_regression_plot(rd_rd_data, 'Total Referring Domains', 'Organic Traffic')
+    rd_fig, rd_result = func.get_regression_plot(rd_rd_data, 'Total Referring Domains', 'Organic Traffic',
+                                                 title_=txt.client_short_name+'_referring_domains')
     st.plotly_chart(rd_fig, use_container_width=True, config=sty.plotly_config_dict)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.plotly_chart(backlinks_fig, use_container_width=True, config=sty.plotly_config_dict)
+    with col2:
+        st.plotly_chart(rd_fig, use_container_width=True, config=sty.plotly_config_dict)
+
 
 # ############################################ REFERRING DOMAINS VS BACKLINKS ##########################################
 st.markdown('<h4 style=' + sty.style_string + '> Keywords Analysis </h4>',
@@ -304,19 +314,23 @@ st.markdown('<h4 style=' + sty.style_string + '> Keywords Analysis </h4>',
 with st.expander("Click to Expand/Collapse"):
 
     st.markdown('<h5 style=' + sty.style_string + '> Organic Traffic vs Total Keywords </h5>', unsafe_allow_html=True)
-    kwd_total_fig, kwd_total_result = func.get_regression_plot(kw_rd_data, 'Total Keywords', 'Organic Traffic')
+    kwd_total_fig, kwd_total_result = func.get_regression_plot(kw_rd_data, 'Total Keywords', 'Organic Traffic',
+                                                               title_=txt.client_short_name+'_KW_total')
     st.plotly_chart(kwd_total_fig, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<h5 style=' + sty.style_string + '> Organic Traffic vs 1-3 Keywords </h5>', unsafe_allow_html=True)
-    kwd_1_3_fig, kwd_1_3_result = func.get_regression_plot(kw_rd_data, '1-3', 'Organic Traffic')
+    kwd_1_3_fig, kwd_1_3_result = func.get_regression_plot(kw_rd_data, '1-3', 'Organic Traffic',
+                                                           title_=txt.client_short_name+'_KW_1-3')
     st.plotly_chart(kwd_1_3_fig, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<h5 style=' + sty.style_string + '> Organic Traffic vs 4-10 Keywords </h5>', unsafe_allow_html=True)
-    kwd_4_10_fig, kwd_4_10_result = func.get_regression_plot(kw_rd_data, '4-10', 'Organic Traffic')
+    kwd_4_10_fig, kwd_4_10_result = func.get_regression_plot(kw_rd_data, '4-10', 'Organic Traffic',
+                                                             title_=txt.client_short_name+'_KW_4-10')
     st.plotly_chart(kwd_4_10_fig, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<h5 style=' + sty.style_string + '> Organic Traffic vs 11-100 Keywords </h5>', unsafe_allow_html=True)
-    kwd_11_100_fig, kwd_11_100_result = func.get_regression_plot(kw_rd_data, '11-100', 'Organic Traffic')
+    kwd_11_100_fig, kwd_11_100_result = func.get_regression_plot(kw_rd_data, '11-100', 'Organic Traffic',
+                                                                 title_=txt.client_short_name+'_KW_11-100')
     st.plotly_chart(kwd_11_100_fig, use_container_width=True, config=sty.plotly_config_dict)
 
 

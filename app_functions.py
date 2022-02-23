@@ -114,12 +114,13 @@ def shap_domain_merge2(data_, domain_df_):
     return data_
 
 
-def particular_sov_get_srf_barchart(df_, top_n=10):
+def particular_sov_get_srf_barchart(df_, title_=None, top_n=10):
     """Function is used to create a barchart with the sov for the dataframe
 
     Parameters:
         df_ (dataframe): dataframe for which the SOV will be calculated
         top_n (int): number of domains to be included in the chart
+        title_ : title to print out visual
 
     Returns:
         fig_sov_: plotly barchart
@@ -129,13 +130,17 @@ def particular_sov_get_srf_barchart(df_, top_n=10):
     df_.reset_index(inplace=True)
     df_ = df_.iloc[:top_n, :]
 
+    st.dataframe(df_)
+
     # Bar Chart
-    title_ = "Share of Voice"
-    fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title_, width=800, height=400)
+    title = "Share of Voice"
+    fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title, width=1000*0.85, height=750*0.85)
     fig_sov_.update_traces(texttemplate='%{text:%}', marker_color='#1C2D54')
     fig_sov_.update_xaxes(title='Domain')
     fig_sov_.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
                            title_font_family='Avenir,Helvetica Neue,sans-serif')
+
+    #fig_sov_.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
 
     return fig_sov_
 
@@ -314,11 +319,18 @@ def get_summary_plot(df, top_n_shap_x, n=5):
     return summ_fig_pyplot, x_min, x_max
 
 
-def get_dependence_plot(df_, feature_x, feature_x_shap, color_dict, hover_data):
+def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=None):
+
+
     df_dependence = df_.copy()
-    fig_dependence = px.scatter(df_dependence, x=feature_x, y=feature_x_shap, color="Domain Type",
-                                color_discrete_map=color_dict, opacity=0.5,
-                                hover_data=hover_data, range_x=[-1, df_dependence[feature_x].quantile(.90) + 1])
+
+    if color_dict is None:
+        fig_dependence = px.scatter(df_dependence, x=feature_x, y=feature_x_shap, opacity=0.5,
+                                    hover_data=hover_data, range_x=[-1, df_dependence[feature_x].quantile(.90) + 1])
+    else:
+        fig_dependence = px.scatter(df_dependence, x=feature_x, y=feature_x_shap, color="Domain Type",
+                                    color_discrete_map=color_dict, opacity=0.5,
+                                    hover_data=hover_data, range_x=[-1, df_dependence[feature_x].quantile(.90) + 1])
     fig_dependence.layout.font.family = 'Avenir'
     fig_dependence.update_traces(showlegend=True)
     fig_dependence.update_yaxes(title='Impact on Page-One Probability')
@@ -328,15 +340,18 @@ def get_dependence_plot(df_, feature_x, feature_x_shap, color_dict, hover_data):
     return fig_dependence
 
 
-def get_regression_plot(df_, x_, y_):
+def get_regression_plot(df_, x_, y_, title_=None):
 
     fig = px.scatter(df_, x=x_, y=y_, trendline="ols", trendline_color_override=sty.arc_colors2[0])
 
     fig.update_traces(marker_symbol=3, marker_color=sty.arc_colors2[6])
     fig.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
-                      title_font_family='Avenir,Helvetica Neue,sans-serif')
+                      title_font_family='Avenir,Helvetica Neue,sans-serif',
+                      width=150 * 0.85, height=500 * 0.85)
 
     results = px.get_trendline_results(fig)
+
+    #fig.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
 
     return fig, results
 

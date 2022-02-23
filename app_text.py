@@ -3,6 +3,7 @@ import app_style as sty
 # Section to update client's information
 # Define client brand and client brand industry - replace with different QMAs
 client = 'Ellis Corporation'  # Client name here
+client_short_name = 'EC'
 client_industry = 'Industrial Water Treatment Solutions'  # Client industry here
 client_industry_for_title = 'Industrial Water Treatment Solutions'
 
@@ -16,7 +17,7 @@ sov_wastewater_input_file_name = 'EC_wastewater_sov_output.csv'
 
 kwd_dist_file_name = 'EC_kw_dist_output.csv'
 data_file_name = 'data.parquet'  # this is a parquet file from pre-processing
-domain_file_name = 'Cannabis_SRF_Domains - Domain Type Breakdown.csv'
+# domain_file_name = 'Cannabis_SRF_Domains - Domain Type Breakdown.csv'
 
 kw_rd_data_file_name = 'EC_KW_Analysis-RegressionData.csv'
 rd_rd_data_file_name = 'EC_RD_Analysis-RegressionData.csv'
