@@ -130,8 +130,6 @@ def particular_sov_get_srf_barchart(df_, title_=None, top_n=10):
     df_.reset_index(inplace=True)
     df_ = df_.iloc[:top_n, :]
 
-    st.dataframe(df_)
-
     # Bar Chart
     title = "Share of Voice"
     fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title, width=1000*0.85, height=750*0.85)
@@ -169,10 +167,18 @@ def keyword_distribution_barchart(kw_df, title_):
 
 
 def get_sov_barchart(selected_cluster_df, top_n=10):
-    selected_cluster_df = pd.DataFrame({"SOV": selected_cluster_df.groupby('Domain')['Est. Relevant Traffic'].sum()})
-    selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
-    selected_cluster_df = selected_cluster_df / selected_cluster_df[selected_cluster_df.columns].sum()
-    selected_cluster_df = selected_cluster_df.head(top_n)
+
+    if 'Domain' in selected_cluster_df.columns:
+        selected_cluster_df = pd.DataFrame({"SOV": selected_cluster_df.groupby('Domain')['Est. Relevant Traffic'].sum()})
+        selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
+        selected_cluster_df = selected_cluster_df / selected_cluster_df[selected_cluster_df.columns].sum()
+        selected_cluster_df = selected_cluster_df.head(top_n)
+
+    if 'SOV' not in selected_cluster_df:
+        selected_cluster_df['SOV'] = selected_cluster_df['Est. Mo Traffic'] / selected_cluster_df['Est. Mo Traffic'].sum()
+        selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
+        selected_cluster_df = selected_cluster_df.head(top_n)
+
 
     fig_sov_ = px.bar(selected_cluster_df, x=selected_cluster_df.index, y="SOV",
                       height=400, text="SOV",
@@ -180,7 +186,9 @@ def get_sov_barchart(selected_cluster_df, top_n=10):
     fig_sov_.layout.font.family = 'Avenir'
     fig_sov_.update_traces(texttemplate='%{text:%}')
     fig_sov_.update_traces(marker_color='#1C2D54')
-    fig_sov_.update_xaxes(title='Domain')
+
+    if 'Domain' in selected_cluster_df.columns:
+        fig_sov_.update_xaxes(title='Domain')
 
     fig_sov_.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
                            title_font_family='Avenir,Helvetica Neue,sans-serif')

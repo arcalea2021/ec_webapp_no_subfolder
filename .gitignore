@@ -122,3 +122,5 @@ temp*.py
 *-angela*
 /backup_data/
 /auxiliary_py_files/
+
+*full_set_shap*

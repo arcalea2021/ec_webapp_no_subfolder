@@ -43,7 +43,6 @@ with st.container():
     keyword_distribution = pd.read_csv(txt.FILES_LOCATION + txt.kwd_dist_file_name)
 
     data = pd.read_parquet(txt.FILES_LOCATION + txt.data_file_name)
-    # type_info = pd.read_csv(txt.FILES_LOCATION + txt.domain_file_name)
     kw_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.kw_rd_data_file_name)
     rd_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.rd_rd_data_file_name)
 
@@ -99,8 +98,6 @@ st.markdown('<h4 style=' + sty.style_string + '> Keyword Distribution </h4>', un
 
 with st.expander("Click to Expand/Collapse"):
 
-    st.dataframe(keyword_distribution)
-
     # READING KWD Distribution Data - START
     keyword_distribution['company_total'] = keyword_distribution.groupby(['Company'])['group_total'].transform('sum')
     keyword_distribution = keyword_distribution.sort_values(by=['company_total', 'variable order'])
@@ -121,7 +118,8 @@ with st.expander("Click to Expand/Collapse"):
         st.markdown(txt.kwd_clustering_paragraph4, unsafe_allow_html=True)
 
     with st.container():
-        data_no999 = data[-(data['Cluster ID'] == 999)]  # Remove "local" 999 cluster from data for this section
+        data_no999 = data
+        # data_no999 = data[-(data['Cluster ID'] == 999)]  # Remove "local" 999 cluster from data for this section
         cluster_label_list = list(data_no999['Cluster'].unique())
 
         # cluster_list.sort()
@@ -143,21 +141,6 @@ with st.expander("Click to Expand/Collapse"):
             '<p style=' + sty.style_string + '>' + 'The monthly search volume (MSV) for this cluster is <b>' + "{0:,.0f}".format(cluster_msv_value) + '</b>.' + '</p>',
             unsafe_allow_html=True)
 
-        # domain_type_list = list(df_selected_cluster['Domain Type'].unique())
-        # domain_type_list = sorted(domain_type_list)
-
-        # Plot ratios using pie charts
-        # st.markdown(txt.kwd_clustering_ratios_paragraph1, unsafe_allow_html=True)
-        # st.markdown(txt.kwd_clustering_ratios_paragraph2, unsafe_allow_html=True)
-
-        # both_ratios = func.calculate_both_ratios(df_selected_cluster, domain_type_list)
-
-        # ratios_fig = func.get_ratios_chart(both_ratios)
-        # st.plotly_chart(ratios_fig, use_container_width=True, config=sty.plotly_config_dict)
-        
-        # st.table(data=type_info)
-
-        # Calculate SOV by Domain
         selected_cluster_sov_fig = func.get_sov_barchart(df_selected_cluster)
 
         st.markdown('<p style=' + sty.style_string + '> <b> Share of Voice in this Cluster </b> </p>',
@@ -203,11 +186,7 @@ with st.expander("Click to Expand/Collapse"):
     feature_x_shap = feature_x + " SHAP"
     hover_data = list(top_10_shap.index)
 
-    all_domain_type_list = list(data['Domain Type'].unique())
-
-    # color_dict = {domain_type_list[i]: sty.arc_colors[i] for i in range(len(domain_type_list))}
-
-    fig_dependence_overall = func.get_dependence_plot(data, feature_x, feature_x_shap, color_dict, hover_data)
+    fig_dependence_overall = func.get_dependence_plot(data, feature_x, feature_x_shap, hover_data)
 
     st.plotly_chart(fig_dependence_overall, use_container_width=True, config=sty.plotly_config_dict)
 
@@ -267,11 +246,8 @@ with st.expander("Click to Expand/Collapse"):
     feature_x_sc_shap = feature_x_sc + " SHAP"
     hover_data_sc = list(top_10_shap_sc.index)
 
-    all_domain_type_list_sc = list(data['Domain Type'].unique())
-    color_dict_sc = {all_domain_type_list_sc[i]: sty.arc_colors[i] for i in range(len(all_domain_type_list_sc))}
 
-    fig_dependence_sc = func.get_dependence_plot(df_dependence_sc, feature_x_sc, feature_x_sc_shap, color_dict_sc,
-                                                 hover_data_sc)
+    fig_dependence_sc = func.get_dependence_plot(df_dependence_sc, feature_x_sc, feature_x_sc_shap, hover_data_sc)
 
     st.plotly_chart(fig_dependence_sc, use_container_width=True, config=sty.plotly_config_dict)
 
