@@ -19,7 +19,7 @@ est_relevant_traffic = pd.DataFrame({"CTR": ctr_curve, "Position": np.arange(1, 
 
 # Reading full set shap (for the Clusters)
 shap_data_input = pd.read_csv(txt.FILES_LOCATION + txt.client_full_set_shap_file_name)
-shap_clusters = shap_data_input[['Keyword', 'Cluster']].drop_duplicates()
+shap_clusters = shap_data_input[['Keyword', 'Original Cluster', 'Cluster']].drop_duplicates()
 
 # Reading SOV input file
 sov_columns = ['URL', 'Keyword', 'Position', 'Volume', 'CPS', 'Clicks']
@@ -35,7 +35,7 @@ sov.drop(columns='Keyword', inplace=True)
 sov = sov.rename(columns={'grouping_keyword': 'Keyword', 'URL': 'Final URL'})
 sov = pd.merge(sov, shap_clusters, on='Keyword', how='left')
 print(" - sov dataset contains {} records".format(sov.shape[0]))
-sov['cluster_avg_cps'] = sov['CPS'].groupby(sov['Cluster']).transform('mean')
+sov['cluster_avg_cps'] = sov['CPS'].groupby(sov['Original Cluster']).transform('mean')  # Using Original cluster for CPS imputation
 sov['avg_cps'] = sov['CPS'].mean()
 sov['CPS (Imputed)'] = sov.apply(lambda x: impute_cps(x['CPS'], x['cluster_avg_cps'], x['avg_cps']), axis=1)
 sov['Clicks'] = sov['Volume'] * sov['CPS (Imputed)']
