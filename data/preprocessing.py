@@ -22,8 +22,9 @@ shap_data_input = pd.read_csv(txt.FILES_LOCATION + txt.client_full_set_shap_file
 shap_clusters = shap_data_input[['Keyword', 'Original Cluster', 'Cluster']].drop_duplicates()
 
 # Reading SOV input file
-sov_columns = ['URL', 'Keyword', 'Position', 'Volume', 'CPS', 'Clicks']
+sov_columns = ['URL', 'keyword', 'Position', 'Volume', 'CPS', 'Clicks']
 sov = pd.read_csv(txt.FILES_LOCATION + txt.sov_wastewater_for_preprocessing_file_name)[sov_columns]
+sov = sov.rename(columns={'keyword': 'Keyword'})
 print(" - sov dataset contains {} records".format(sov.shape[0]))
 dedup_keywords = pd.read_csv(txt.FILES_LOCATION + txt.sov_grouped_grouping_keywords_file_name)
 dedup_keywords.columns = ['grouping_keyword', 'Keyword']
