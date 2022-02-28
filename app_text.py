@@ -6,6 +6,7 @@ client = 'Ellis Corporation'  # Client name here
 client_short_name = 'EC'
 client_industry = 'Industrial Water Treatment Solutions'  # Client industry here
 client_industry_for_title = 'Industrial Water Treatment Solutions'
+client_full_set_shap_file_name = 'option4_full_set_shap.csv'
 
 FILES_LOCATION = 'data/'
 
@@ -14,6 +15,8 @@ sov_branded_input_file_name = 'EC_branded_sov_output.csv'  # this is a parquet f
 sov_heating_input_file_name = 'EC_heating_sov_output.csv'
 sov_laundry_input_file_name = 'EC_laundry_sov_output.csv'
 sov_wastewater_input_file_name = 'EC_wastewater_sov_output.csv'
+sov_wastewater_for_preprocessing_file_name = 'wastewater_sov_updated.csv'
+sov_grouped_grouping_keywords_file_name = 'EC_wastewater_grouper_grouped_keyword_df.csv'
 
 kwd_dist_file_name = 'EC_kw_dist_output.csv'
 data_file_name = 'data.parquet'  # this is a parquet file from pre-processing

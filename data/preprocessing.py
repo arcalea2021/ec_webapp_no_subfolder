@@ -18,15 +18,14 @@ ctr_curve = [0.233, 0.205, 0.133, .087, .063, .047, .038, .031, .027, .023, 0, 0
 est_relevant_traffic = pd.DataFrame({"CTR": ctr_curve, "Position": np.arange(1, len(ctr_curve) + 1)})
 
 # Reading full set shap (for the Clusters)
-shap_data_input = pd.read_csv(txt.FILES_LOCATION + 'option3_full_set_shap.csv')
+shap_data_input = pd.read_csv(txt.FILES_LOCATION + txt.client_full_set_shap_file_name)
 shap_clusters = shap_data_input[['Keyword', 'Cluster']].drop_duplicates()
 
 # Reading SOV input file
 sov_columns = ['URL', 'Keyword', 'Position', 'Volume', 'CPS', 'Clicks']
-sov = pd.read_csv(txt.FILES_LOCATION + 'wastewater_sov_updated.csv')[sov_columns]
+sov = pd.read_csv(txt.FILES_LOCATION + txt.sov_wastewater_for_preprocessing_file_name)[sov_columns]
 print(" - sov dataset contains {} records".format(sov.shape[0]))
-grouped_grouping_keywords_file_name = 'EC_wastewater_grouper_grouped_keyword_df.csv'
-dedup_keywords = pd.read_csv(txt.FILES_LOCATION + grouped_grouping_keywords_file_name)
+dedup_keywords = pd.read_csv(txt.FILES_LOCATION + txt.sov_grouped_grouping_keywords_file_name)
 dedup_keywords.columns = ['grouping_keyword', 'Keyword']
 dedup_keywords['Keyword'] = [x.strip() for x in dedup_keywords['Keyword']]
 sov = pd.merge(sov, dedup_keywords, on='Keyword', how='left')
@@ -53,5 +52,5 @@ print(" - shap_data_input records after sov merge are {}".format(shap_data_input
 
 include_columns = [x for x in shap_data_input.columns if '_Count' not in x]
 shap_data_input = shap_data_input[include_columns]
-shap_data_input.to_csv(txt.FILES_LOCATION + 'data.csv', index=False)
+# shap_data_input.to_csv(txt.FILES_LOCATION + 'data.csv', index=False)
 shap_data_input.to_parquet(txt.FILES_LOCATION + 'data.parquet')
