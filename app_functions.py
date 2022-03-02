@@ -9,13 +9,13 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import streamlit as st
 
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from plotly.subplots import make_subplots
-
-import streamlit as st
+from urllib.parse import urlparse
 
 import app_style as sty
 
@@ -143,10 +143,22 @@ def particular_sov_get_srf_barchart(df_, title_=None, top_n=10):
     return fig_sov_
 
 
-def keyword_distribution_barchart(kw_df, title_):
+def color(text, client_name=None):
+    # color: hexadecimal
+
+    color = sty.arc_colors2[0] if text == client_name else sty.arc_colors2[5]
+
+    s = "<span style='color:" + str(color) + "'>" + str(text) + "</span>"
+
+    s = '<b>' + s + '</b>' if text == client_name else s
+
+    return s
+
+
+def keyword_distribution_barchart(kw_df, title_, client_name):
     fig_ = px.bar(kw_df, x="Company", y="group_total", color="KW Group",
                   custom_data=['Branded %', 'Non-Branded %', 'KW Group'],
-                  title="Keyword Distribution - " + title_,
+                  #title="Keyword Distribution - " + title_,
                   color_discrete_sequence=['#D7E6F2', '#9EC1DE', '#324680'], height=500, width=800)
 
     for data_ in fig_.data:
@@ -163,21 +175,36 @@ def keyword_distribution_barchart(kw_df, title_):
     fig_.update_layout(legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
     fig_.update_layout(margin=dict(l=20, r=20, t=100, b=100))
 
+    # Adding color and bold to client's name in the visual
+    x_axis_labels = kw_df['Company'].unique()
+    tick_text = [color(k, client_name) for k in x_axis_labels]
+
+    fig_.update_layout(
+        xaxis=dict(tickmode='array', ticktext=tick_text, tickvals=x_axis_labels),
+        title=title_
+    )
+
     return fig_
 
 
 def get_sov_barchart(selected_cluster_df, top_n=10):
+    if 'Domain' not in selected_cluster_df:
+        selected_cluster_df['Domain'] = selected_cluster_df['Final URL'].apply(lambda x: urlparse(x).netloc)
 
-    if 'Domain' in selected_cluster_df.columns:
-        selected_cluster_df = pd.DataFrame({"SOV": selected_cluster_df.groupby('Domain')['Est. Relevant Traffic'].sum()})
-        selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
-        selected_cluster_df = selected_cluster_df / selected_cluster_df[selected_cluster_df.columns].sum()
-        selected_cluster_df = selected_cluster_df.head(top_n)
+    if 'Est. Mo Traffic' in selected_cluster_df:
+        selected_cluster_df = pd.DataFrame(
+            {"Est. Mo Traffic": selected_cluster_df.groupby('Domain')['Est. Mo Traffic'].sum()})
+        selected_cluster_df = selected_cluster_df.sort_values(by='Est. Mo Traffic', ascending=False)
 
-    if 'SOV' not in selected_cluster_df:
         selected_cluster_df['SOV'] = selected_cluster_df['Est. Mo Traffic'] / selected_cluster_df['Est. Mo Traffic'].sum()
         selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
         selected_cluster_df = selected_cluster_df.head(top_n)
+
+    #elif 'Domain' in selected_cluster_df.columns:
+    #    selected_cluster_df = pd.DataFrame({"SOV": selected_cluster_df.groupby('Domain')['Est. Relevant Traffic'].sum()})
+    #    selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
+    #    selected_cluster_df = selected_cluster_df / selected_cluster_df[selected_cluster_df.columns].sum()
+    #    selected_cluster_df = selected_cluster_df.head(top_n)
 
 
     fig_sov_ = px.bar(selected_cluster_df, x=selected_cluster_df.index, y="SOV",
@@ -335,12 +362,15 @@ def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=N
     if color_dict is None:
         fig_dependence = px.scatter(df_dependence, x=feature_x, y=feature_x_shap, opacity=0.5,
                                     hover_data=hover_data, range_x=[-1, df_dependence[feature_x].quantile(.90) + 1])
+        fig_dependence.update_traces(marker=dict(color=sty.arc_colors2[6]))
+        fig_dependence.update_traces(showlegend=False)
     else:
         fig_dependence = px.scatter(df_dependence, x=feature_x, y=feature_x_shap, color="Domain Type",
                                     color_discrete_map=color_dict, opacity=0.5,
                                     hover_data=hover_data, range_x=[-1, df_dependence[feature_x].quantile(.90) + 1])
+        fig_dependence.update_traces(showlegend=True)
+
     fig_dependence.layout.font.family = 'Avenir'
-    fig_dependence.update_traces(showlegend=True)
     fig_dependence.update_yaxes(title='Impact on Page-One Probability')
     fig_dependence.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
                                  title_font_family='Avenir,Helvetica Neue,sans-serif')
@@ -348,7 +378,7 @@ def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=N
     return fig_dependence
 
 
-def get_regression_plot(df_, x_, y_, title_=None):
+def get_regression_plot(df_, x_, y_, x_axis_title=None, title_=None):
 
     fig = px.scatter(df_, x=x_, y=y_, trendline="ols", trendline_color_override=sty.arc_colors2[0])
 
@@ -358,6 +388,11 @@ def get_regression_plot(df_, x_, y_, title_=None):
                       width=150 * 0.85, height=500 * 0.85)
 
     results = px.get_trendline_results(fig)
+
+    fig.update_layout(
+        xaxis_title=x_axis_title
+    )
+
 
     #fig.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
 
@@ -385,3 +420,14 @@ def get_df_sc(data_no999, selected_cluster_shap_sc):
     top_10_shap_sc.columns = [selected_cluster_shap_sc]
 
     return df_selected_cluster, df_selected_cluster_abs, top_10_shap_sc
+
+
+def get_cluster_names(df):
+    cluster_names_df = df[['Cluster', 'Volume', 'Keyword']]
+    cluster_names_df = cluster_names_df.fillna(0).drop_duplicates()
+    cluster_names_df = cluster_names_df.sort_values(by=['Cluster', 'Volume'], ascending=[True, False])
+    cluster_names_df = cluster_names_df.groupby('Cluster').head(1)
+    cluster_names_df = cluster_names_df[cluster_names_df['Volume'] > 0]
+    cluster_names_df = cluster_names_df[['Cluster', 'Keyword']]
+
+    return cluster_names_df
