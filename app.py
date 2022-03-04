@@ -151,7 +151,7 @@ with st.expander("Click to Expand/Collapse"):
         data_no999 = data
         data_no999 = data_no999[data_no999['Volume'] > 0]  # Filtering keywords with volume 0
         # data_no999 = data[-(data['Cluster ID'] == 999)]  # Remove "local" 999 cluster from data for this section
-        cluster_names_df = func.get_cluster_names(data_no999)
+        cluster_names_df = func.get_cluster_names(data_no999, txt.exceptions_cluster_number, txt.exceptions_cluster_names)
         # cluster_label_list = list(data_no999['Cluster'].unique())
         cluster_label_list = list(cluster_names_df['Keyword'].unique())
 

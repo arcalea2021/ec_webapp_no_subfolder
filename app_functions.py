@@ -422,12 +422,19 @@ def get_df_sc(data_no999, selected_cluster_shap_sc):
     return df_selected_cluster, df_selected_cluster_abs, top_10_shap_sc
 
 
-def get_cluster_names(df):
+def get_cluster_names(df, exceptions_cluster_number=None, exceptions_cluster_names=None):
     cluster_names_df = df[['Cluster', 'Volume', 'Keyword']]
     cluster_names_df = cluster_names_df.fillna(0).drop_duplicates()
     cluster_names_df = cluster_names_df.sort_values(by=['Cluster', 'Volume'], ascending=[True, False])
     cluster_names_df = cluster_names_df.groupby('Cluster').head(1)
     cluster_names_df = cluster_names_df[cluster_names_df['Volume'] > 0]
     cluster_names_df = cluster_names_df[['Cluster', 'Keyword']]
+
+    # Specific names for top clusters
+    if exceptions_cluster_number is not None:
+        for i in range(0, len(exceptions_cluster_number)):
+            number_ = exceptions_cluster_number[i]
+            name_ = exceptions_cluster_names[i]
+            cluster_names_df.loc[(cluster_names_df['Cluster'] == number_, 'Keyword')] = name_
 
     return cluster_names_df

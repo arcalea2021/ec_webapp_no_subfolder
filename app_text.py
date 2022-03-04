@@ -27,6 +27,10 @@ data_file_name = 'data.parquet'  # this is a parquet file from pre-processing
 kw_rd_data_file_name = 'EC_KW_Analysis-RegressionData.csv'
 rd_rd_data_file_name = 'EC_RD_Analysis-RegressionData.csv'
 
+# Top cluster numbers and names
+exceptions_cluster_number = ['13_0_0.0', '22_0_0.0', '0_1000.0_16.0']
+exceptions_cluster_names = ['reverse osmosis', 'oil water separator', 'direct water heating']
+
 # Text for header
 info_message = "The following analysis leverages real-time calculations on the current dataset. Please allow approximately 60 seconds for the interface to load. Once loaded, each section can be expanded using the (+) buttons; navigation between expanded sections can be achieved through the Table of Contents bar to the left."
 header_paragraph1 = '<p style=' + sty.style_string + '>The following application is an interactive page that provides insights and recommendations intended to help a brand maximize a domain’s probability of ranking on Google’s first page within the ' + client_industry + ' industry.</p>'
