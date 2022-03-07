@@ -114,13 +114,12 @@ def shap_domain_merge2(data_, domain_df_):
     return data_
 
 
-def particular_sov_get_srf_barchart(df_, title_=None, top_n=10):
+def particular_sov_get_srf_barchart(df_, top_n=10):
     """Function is used to create a barchart with the sov for the dataframe
 
     Parameters:
         df_ (dataframe): dataframe for which the SOV will be calculated
         top_n (int): number of domains to be included in the chart
-        title_ : title to print out visual
 
     Returns:
         fig_sov_: plotly barchart
@@ -138,17 +137,15 @@ def particular_sov_get_srf_barchart(df_, title_=None, top_n=10):
     fig_sov_.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
                            title_font_family='Avenir,Helvetica Neue,sans-serif')
 
-    #fig_sov_.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
-
     return fig_sov_
 
 
 def color(text, client_name=None):
     # color: hexadecimal
 
-    color = sty.arc_colors2[0] if text == client_name else sty.arc_colors2[5]
+    color_ = sty.arc_colors2[0] if text == client_name else sty.arc_colors2[5]
 
-    s = "<span style='color:" + str(color) + "'>" + str(text) + "</span>"
+    s = "<span style='color:" + str(color_) + "'>" + str(text) + "</span>"
 
     s = '<b>' + s + '</b>' if text == client_name else s
 
@@ -158,7 +155,7 @@ def color(text, client_name=None):
 def keyword_distribution_barchart(kw_df, title_, client_name):
     fig_ = px.bar(kw_df, x="Company", y="group_total", color="KW Group",
                   custom_data=['Branded %', 'Non-Branded %', 'KW Group'],
-                  #title="Keyword Distribution - " + title_,
+                  # title="Keyword Distribution - " + title_,
                   color_discrete_sequence=['#D7E6F2', '#9EC1DE', '#324680'], height=500, width=800)
 
     for data_ in fig_.data:
@@ -200,12 +197,11 @@ def get_sov_barchart(selected_cluster_df, top_n=10):
         selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
         selected_cluster_df = selected_cluster_df.head(top_n)
 
-    #elif 'Domain' in selected_cluster_df.columns:
+    # elif 'Domain' in selected_cluster_df.columns:
     #    selected_cluster_df = pd.DataFrame({"SOV": selected_cluster_df.groupby('Domain')['Est. Relevant Traffic'].sum()})
     #    selected_cluster_df = selected_cluster_df.sort_values(by='SOV', ascending=False)
     #    selected_cluster_df = selected_cluster_df / selected_cluster_df[selected_cluster_df.columns].sum()
     #    selected_cluster_df = selected_cluster_df.head(top_n)
-
 
     fig_sov_ = px.bar(selected_cluster_df, x=selected_cluster_df.index, y="SOV",
                       height=400, text="SOV",
@@ -356,7 +352,6 @@ def get_summary_plot(df, top_n_shap_x, n=5):
 
 def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=None):
 
-
     df_dependence = df_.copy()
 
     if color_dict is None:
@@ -378,7 +373,7 @@ def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=N
     return fig_dependence
 
 
-def get_regression_plot(df_, x_, y_, x_axis_title=None, title_=None):
+def get_regression_plot(df_, x_, y_, x_axis_title=None):
 
     fig = px.scatter(df_, x=x_, y=y_, trendline="ols", trendline_color_override=sty.arc_colors2[0])
 
@@ -393,8 +388,7 @@ def get_regression_plot(df_, x_, y_, x_axis_title=None, title_=None):
         xaxis_title=x_axis_title
     )
 
-
-    #fig.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
+    # fig.write_image(title_ + ".svg", width=10 * 300, height=7.5 * 300, scale=1, engine='kaleido')
 
     return fig, results
 

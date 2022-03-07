@@ -82,15 +82,15 @@ with st.expander("Click to Expand/Collapse"):
     st.plotly_chart(wastewater_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Water Heating, Pumping, and Storage Solutions - Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
-    heating_sov = func.particular_sov_get_srf_barchart(sov_heating_df, title_=txt.client_short_name+'_heating_sov')
+    heating_sov = func.particular_sov_get_srf_barchart(sov_heating_df)
     st.plotly_chart(heating_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Laundry Solutions - Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
-    laundry_sov = func.particular_sov_get_srf_barchart(sov_laundry_df, title_=txt.client_short_name+'_laundry_sov')
+    laundry_sov = func.particular_sov_get_srf_barchart(sov_laundry_df)
     st.plotly_chart(laundry_sov, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown('<p style=' + sty.style_string + '> <b> Branded Solutions - Share of Voice (SOV) </b> </p>', unsafe_allow_html=True)
-    branded_sov = func.particular_sov_get_srf_barchart(sov_branded_df, title_=txt.client_short_name+'_branded_sov')
+    branded_sov = func.particular_sov_get_srf_barchart(sov_branded_df)
     st.plotly_chart(branded_sov, use_container_width=True, config=sty.plotly_config_dict)
 
 # ######################################################## KEYWORD DISTRIBUTION  #######################################
@@ -170,7 +170,7 @@ with st.expander("Click to Expand/Collapse"):
 
         volume_keywords_in_this_cluster = df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna()
         volume_keywords_in_this_cluster = pd.DataFrame(volume_keywords_in_this_cluster)
-        st.write(volume_keywords_in_this_cluster.style.format("{0:,.0f}"))
+        st.dataframe(volume_keywords_in_this_cluster.style.format("{0:,.0f}"))
 
         cluster_msv_value = sum(df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna())
         st.markdown(
