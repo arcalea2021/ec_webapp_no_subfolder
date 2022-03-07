@@ -14,7 +14,6 @@ warnings.filterwarnings("ignore")
 shap.initjs()
 
 # ##################### Page title #####################################################################################
-# Set title and favicon
 st.set_page_config(page_title=txt.client_industry_for_title + ': Machine Learning Factor Analysis',
                    page_icon='https://arcalea.com/wp-content/uploads/2019/02/Arc-favicon-150x150.png',
                    layout="wide")

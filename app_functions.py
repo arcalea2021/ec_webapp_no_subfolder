@@ -39,7 +39,6 @@ def tac():
 
 
 # Load Avenir font
-# @st.cache()
 def get_font():
     # url = 'https://github.com/Papillard/Avenir/blob/master/AvenirBold.ttf'
     fm.fontManager.ttflist += fm.createFontList(['AvenirBold.ttf'])

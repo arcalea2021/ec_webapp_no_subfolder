@@ -40,13 +40,13 @@ ratio_charts_color = ['rgb(0, 25, 51)', 'rgb(0, 51, 102)', 'rgb(44, 93, 135)', '
 arc_colors = ["#df9567", "#87a926", "#3f74c0", "#9e6cb7", "#6f92c3", "#481362", "#415f8b", "#92bb20", "#873eab",
               "#b7c8e1"]
 
-arc_colors2 = ['#A34F9A',  # purple
-               '#0D7BBD',  # teal
-               '#56AEE3',  # light blue
-               '#2C4784',  # blue
-               '#EDF2F9',  # light grey
-               '#4A4A4A',  # dark grey
-               '#1C2D54'   # dark blue
+arc_colors2 = ['#A34F9A',  # 0 purple
+               '#0D7BBD',  # 1 teal
+               '#56AEE3',  # 2 light blue
+               '#2C4784',  # 3 blue
+               '#EDF2F9',  # 4 light grey
+               '#4A4A4A',  # 5 dark grey
+               '#1C2D54'   # 6 dark blue
                ]
 
 figure_height = 7.5
