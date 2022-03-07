@@ -65,9 +65,9 @@ with st.sidebar:
     st.markdown(txt.content_table_sov, unsafe_allow_html=True)
     st.markdown(txt.content_table_kwd_distribution, unsafe_allow_html=True)
     st.markdown(txt.content_table_kwd_clusters, unsafe_allow_html=True)
+    st.markdown(txt.content_table_rd_backlinks, unsafe_allow_html=True)
     st.markdown(txt.content_table_srf_overall, unsafe_allow_html=True)
     st.markdown(txt.content_table_srf_clusters, unsafe_allow_html=True)
-    st.markdown(txt.content_table_rd_backlinks, unsafe_allow_html=True)
     st.markdown(txt.content_table_return_to_top, unsafe_allow_html=True)
 
 # ########################################################## SHARE OF VOICE ############################################
@@ -133,9 +133,11 @@ with st.expander("Click to Expand/Collapse"):
     st.markdown(txt.kwd_dist_paragraph2, unsafe_allow_html=True)
 
     st.markdown(txt.kwd_dist_paragraph3, unsafe_allow_html=True)
+
     st.plotly_chart(kw_dist_plot_ft, use_container_width=True, config=sty.plotly_config_dict)
 
     st.markdown(txt.kwd_dist_paragraph4, unsafe_allow_html=True)
+
 
 # ########################################################## KEYWORD CLUSTERING #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Clustering </h4>', unsafe_allow_html=True)
