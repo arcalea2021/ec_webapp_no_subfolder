@@ -114,7 +114,7 @@ maxUploadSize = 200
 
 # Enables support for websocket compression.
 # Default: true
-enableWebsocketCompression = true
+enableWebsocketCompression = false
 
 [browser]
 
