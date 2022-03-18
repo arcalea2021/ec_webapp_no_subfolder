@@ -179,8 +179,6 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_clus
         # cluster_list.sort()
         selected_cluster_name_shap = st.selectbox("Select a Keyword Cluster", cluster_label_list, key='cluster_box_shap_kwc',
                                              index=0)  # Add a dropdown element
-        st.session_state['kwd_clustering_state'] = True
-        st.session_state['srf_specific_clusters_state'] = False
 
         # selected_cluster_shap = int(selected_cluster_shap)
         df_selected_cluster = data_no999.copy()
@@ -208,6 +206,9 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_clus
         st.markdown('<p style=' + sty.style_string + '> <b> Share of Voice in this Cluster </b> </p>',
                     unsafe_allow_html=True)
         st.plotly_chart(selected_cluster_sov_fig, use_container_width=True, config=sty.plotly_config_dict)
+
+        #st.session_state['kwd_clustering_state'] = True
+        #st.session_state['srf_specific_clusters_state'] = False
 
 # ############################################ REFERRING DOMAINS VS BACKLINKS ##########################################
 st.markdown('<h4 style=' + sty.style_string + '> Referring Domains </h4>', unsafe_allow_html=True)

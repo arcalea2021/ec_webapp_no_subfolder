@@ -52,7 +52,7 @@ def load_sov_data(filepath):
     return sov_data_
 
 
-@st.cache
+#@st.cache
 def load_shap_data(filepath):
     shap_data_ = pd.read_csv(filepath)
     ctr_curve_ = [0.233, 0.205, 0.133, .087, .063, .047, .038, .031, .027, .023, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -300,7 +300,7 @@ def get_srf_barchart_fig(top_n_shap_df, title_):
 
     return fig_
 
-@st.cache
+
 def get_summary_plot(df, top_n_shap_x, n=5):
     df_summary_plot = df.copy()
     df_summary_plot = df_summary_plot[top_n_shap_x]
