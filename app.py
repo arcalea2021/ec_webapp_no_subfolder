@@ -18,6 +18,22 @@ st.set_page_config(page_title=txt.client_industry_for_title + ': Machine Learnin
                    page_icon='https://arcalea.com/wp-content/uploads/2019/02/Arc-favicon-150x150.png',
                    layout="wide")
 
+with st.container():
+    # st.write(st.session_state)  # DELETE - TEST ONLY
+
+    if 'sov_expander_state' not in st.session_state:
+        st.session_state['sov_expander_state'] = False
+    if 'kwd_distribution_state' not in st.session_state:
+        st.session_state['kwd_distribution_state'] = False
+    if 'kwd_clustering_state' not in st.session_state:
+        st.session_state['kwd_clustering_state'] = False
+    if 'srf_overall_state' not in st.session_state:
+        st.session_state['srf_overall_state'] = False
+    if 'srf_specific_clusters_state' not in st.session_state:
+        st.session_state['srf_specific_clusters_state'] = False
+
+    # st.write(st.session_state)  # DELETE - TEST ONLY
+
 # ##################### CSS Styling - and setting plt font family ######################################################
 with st.container():
     # Hide rainbow bar
@@ -72,7 +88,10 @@ with st.sidebar:
 
 # ########################################################## SHARE OF VOICE ############################################
 st.markdown('<h4 style=' + sty.style_string + '> Share of Voice </h4>', unsafe_allow_html=True)
-with st.expander("Click to Expand/Collapse"):
+
+with st.expander("Click to Expand/Collapse", expanded=st.session_state['sov_expander_state']):
+    # st.session_state['sov_expander_state'] = True
+
     st.markdown(txt.sov_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.sov_paragraph2, unsafe_allow_html=True)
 
@@ -95,7 +114,8 @@ with st.expander("Click to Expand/Collapse"):
 # ######################################################## KEYWORD DISTRIBUTION  #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Distribution </h4>', unsafe_allow_html=True)
 
-with st.expander("Click to Expand/Collapse"):
+with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_distribution_state']):
+    # st.session_state['kwd_distribution_state'] = True
 
     # READING KWD Distribution Data - START
     keyword_distribution['company_total'] = keyword_distribution.groupby(['Company'])['group_total'].transform('sum')
@@ -140,7 +160,8 @@ with st.expander("Click to Expand/Collapse"):
 
 # ########################################################## KEYWORD CLUSTERING #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Clustering </h4>', unsafe_allow_html=True)
-with st.expander("Click to Expand/Collapse"):
+with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_clustering_state']):
+
     with st.container():  # text
         st.markdown(txt.kwd_clustering_paragraph1, unsafe_allow_html=True)
         st.markdown(txt.kwd_clustering_paragraph2, unsafe_allow_html=True)
@@ -158,6 +179,9 @@ with st.expander("Click to Expand/Collapse"):
         # cluster_list.sort()
         selected_cluster_name_shap = st.selectbox("Select a Keyword Cluster", cluster_label_list, key='cluster_box_shap_kwc',
                                              index=0)  # Add a dropdown element
+        st.session_state['kwd_clustering_state'] = True
+        st.session_state['srf_specific_clusters_state'] = False
+
         # selected_cluster_shap = int(selected_cluster_shap)
         df_selected_cluster = data_no999.copy()
 
@@ -211,6 +235,7 @@ with st.expander("Click to Expand/Collapse"):
 # ############################################ RANKING FACTORS IMPORTANCE - OVERALL ####################################
 st.markdown('<h4 style=' + sty.style_string + '> Ranking Factor Importance (Overall) </h4>', unsafe_allow_html=True)
 with st.expander("Click to Expand/Collapse"):
+
     st.markdown(txt.srf_overall_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.srf_overall_paragraph2, unsafe_allow_html=True)
     st.markdown(txt.srf_overall_paragraph3, unsafe_allow_html=True)
@@ -259,7 +284,8 @@ with st.expander("Click to Expand/Collapse"):
 st.markdown('<h4 style=' + sty.style_string + '> Ranking Factor Importance (Specific Clusters) </h4>',
             unsafe_allow_html=True)
 
-with st.expander("Click to Expand/Collapse"):
+with st.expander("Click to Expand/Collapse", expanded=st.session_state['srf_specific_clusters_state']):
+
     st.markdown(txt.srf_specific_clusters_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.srf_specific_clusters_paragraph2, unsafe_allow_html=True)
     st.markdown(txt.srf_specific_clusters_paragraph3, unsafe_allow_html=True)
@@ -269,6 +295,8 @@ with st.expander("Click to Expand/Collapse"):
     # selected_cluster_shap_sc = st.selectbox("Select a Keyword Cluster", cluster_label_list, index=0)  # Add a dropdown element
     selected_cluster_name_shap_sc = st.selectbox("Select a Keyword Cluster", cluster_label_list,
                                             index=0)  # Add a dropdown element
+    st.session_state['srf_specific_clusters_state'] = True
+    st.session_state['kwd_clustering_state'] = False
 
     selected_cluster_shap_sc = cluster_names_df[cluster_names_df['Keyword'] == selected_cluster_name_shap_sc]['Cluster'].values[0]
 
@@ -310,6 +338,7 @@ with st.expander("Click to Expand/Collapse"):
 
     feature_x_sc = st.selectbox("Select a Ranking Factor", list(top_10_shap_sc.index), key='ranking_factor_box_sc',
                                 index=0)  # Add a dropdown element
+
     feature_x_sc_shap = feature_x_sc + " SHAP"
     hover_data_sc = list(top_10_shap_sc.index)
 
