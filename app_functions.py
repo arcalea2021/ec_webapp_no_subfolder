@@ -300,7 +300,7 @@ def get_srf_barchart_fig(top_n_shap_df, title_):
 
     return fig_
 
-
+@st.cache
 def get_summary_plot(df, top_n_shap_x, n=5):
     df_summary_plot = df.copy()
     df_summary_plot = df_summary_plot[top_n_shap_x]
