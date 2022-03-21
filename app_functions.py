@@ -130,7 +130,8 @@ def particular_sov_get_srf_barchart(df_, top_n=10):
 
     # Bar Chart
     title = "Share of Voice"
-    fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title, width=1000*0.85, height=750*0.85)
+    #fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title, width=1000*0.85, height=750*0.85)
+    fig_sov_ = px.bar(df_, x="Domain", y="SOV", text="SOV", title=title, width=800, height=400)
     fig_sov_.update_traces(texttemplate='%{text:%}', marker_color='#1C2D54')
     fig_sov_.update_xaxes(title='Domain')
     fig_sov_.update_layout(font_family='Avenir,Helvetica Neue,sans-serif',
@@ -150,7 +151,7 @@ def color(text, client_name=None):
 
     return s
 
-
+#@st.cache(allow_output_mutation=True)
 def keyword_distribution_barchart(kw_df, title_, client_name):
     fig_ = px.bar(kw_df, x="Company", y="group_total", color="KW Group",
                   custom_data=['Branded %', 'Non-Branded %', 'KW Group'],
@@ -183,6 +184,7 @@ def keyword_distribution_barchart(kw_df, title_, client_name):
     return fig_
 
 
+#@st.cache(allow_output_mutation=True)
 def get_sov_barchart(selected_cluster_df, top_n=10):
     if 'Domain' not in selected_cluster_df:
         selected_cluster_df['Domain'] = selected_cluster_df['Final URL'].apply(lambda x: urlparse(x).netloc)
@@ -218,6 +220,7 @@ def get_sov_barchart(selected_cluster_df, top_n=10):
     return fig_sov_
 
 
+#@st.cache(allow_output_mutation=True)
 def calculate_both_ratios(df_selected_cluster, domain_type_list):
     ratio_values_dict = {}
     traffic_values_dict = {}
@@ -251,6 +254,7 @@ def calculate_both_ratios(df_selected_cluster, domain_type_list):
     return both_ratios
 
 
+#@st.cache(allow_output_mutation=True)
 def get_ratios_chart(both_ratios):
     ratios_fig = make_subplots(rows=1, cols=2, specs=[[{'type': 'domain'}, {'type': 'domain'}]])
     ratios_fig.add_trace(
@@ -270,7 +274,7 @@ def get_ratios_chart(both_ratios):
 
     return ratios_fig
 
-
+#@st.cache(allow_output_mutation=True)
 def get_top_n_shap(df_, n=10):
     # Get top 10 SHAP Values
     shap_cols = [col for col in df_.columns if 'SHAP' in col]  # Find columns with 'SHAP' in them
@@ -283,7 +287,7 @@ def get_top_n_shap(df_, n=10):
 
     return top_n_shap
 
-
+#@st.cache(allow_output_mutation=True)
 def get_srf_barchart_fig(top_n_shap_df, title_):
     top_n_shap_df.columns = ['Impact on Page-One Probability']
     fig_ = px.bar(top_n_shap_df, x=top_n_shap_df.index, y='Impact on Page-One Probability', color=top_n_shap_df.index,
@@ -301,6 +305,7 @@ def get_srf_barchart_fig(top_n_shap_df, title_):
     return fig_
 
 
+#@st.cache(allow_output_mutation=True)
 def get_summary_plot(df, top_n_shap_x, n=5):
     df_summary_plot = df.copy()
     df_summary_plot = df_summary_plot[top_n_shap_x]
@@ -348,7 +353,7 @@ def get_summary_plot(df, top_n_shap_x, n=5):
 
     return summ_fig_pyplot, x_min, x_max
 
-
+#@st.cache(allow_output_mutation=True)
 def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=None):
 
     df_dependence = df_.copy()
@@ -371,7 +376,7 @@ def get_dependence_plot(df_, feature_x, feature_x_shap, hover_data, color_dict=N
 
     return fig_dependence
 
-
+#@st.cache(allow_output_mutation=True)
 def get_regression_plot(df_, x_, y_, x_axis_title=None):
 
     fig = px.scatter(df_, x=x_, y=y_, trendline="ols", trendline_color_override=sty.arc_colors2[0])
@@ -391,7 +396,7 @@ def get_regression_plot(df_, x_, y_, x_axis_title=None):
 
     return fig, results
 
-
+#@st.cache(allow_output_mutation=True)
 def get_df_sc(data_no999, selected_cluster_shap_sc):
     df_selected_cluster = data_no999.copy()
 
@@ -414,7 +419,7 @@ def get_df_sc(data_no999, selected_cluster_shap_sc):
 
     return df_selected_cluster, df_selected_cluster_abs, top_10_shap_sc
 
-
+#@st.cache(allow_output_mutation=True)
 def get_cluster_names(df, exceptions_cluster_number=None, exceptions_cluster_names=None):
     cluster_names_df = df[['Cluster', 'Volume', 'Keyword']]
     cluster_names_df = cluster_names_df.fillna(0).drop_duplicates()

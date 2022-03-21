@@ -18,60 +18,44 @@ st.set_page_config(page_title=txt.client_industry_for_title + ': Machine Learnin
                    page_icon='https://arcalea.com/wp-content/uploads/2019/02/Arc-favicon-150x150.png',
                    layout="wide")
 
-with st.container():
-    # st.write(st.session_state)  # DELETE - TEST ONLY
-
-    if 'sov_expander_state' not in st.session_state:
-        st.session_state['sov_expander_state'] = False
-    if 'kwd_distribution_state' not in st.session_state:
-        st.session_state['kwd_distribution_state'] = False
-    if 'kwd_clustering_state' not in st.session_state:
-        st.session_state['kwd_clustering_state'] = False
-    if 'srf_overall_state' not in st.session_state:
-        st.session_state['srf_overall_state'] = False
-    if 'srf_specific_clusters_state' not in st.session_state:
-        st.session_state['srf_specific_clusters_state'] = False
-
-    # st.write(st.session_state)  # DELETE - TEST ONLY
-
 # ##################### CSS Styling - and setting plt font family ######################################################
-with st.container():
+#with st.container():
     # Hide rainbow bar
-    st.markdown(sty.hide_decoration_bar_style, unsafe_allow_html=True)
+st.markdown(sty.hide_decoration_bar_style, unsafe_allow_html=True)
     # Hide hamburger menu & footer
-    st.markdown(sty.hide_streamlit_style, unsafe_allow_html=True)
+st.markdown(sty.hide_streamlit_style, unsafe_allow_html=True)
     # General font (body)
-    st.markdown(sty.body_font_family, unsafe_allow_html=True)
+st.markdown(sty.body_font_family, unsafe_allow_html=True)
     # Set font family
-    plt.rcParams["font.family"] = "AvenirBold"
+plt.rcParams["font.family"] = "AvenirBold"
 
 # ##################### Reading Data ###################################################################################
-with st.container():
+#with st.container():
 
-    sov_branded_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_branded_input_file_name)
-    sov_heating_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_heating_input_file_name)
-    sov_laundry_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_laundry_input_file_name)
-    sov_wastewater_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_wastewater_input_file_name)
+sov_branded_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_branded_input_file_name)
+sov_heating_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_heating_input_file_name)
+sov_laundry_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_laundry_input_file_name)
+sov_wastewater_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_wastewater_input_file_name)
 
-    sov_df = pd.concat([sov_branded_df, sov_heating_df, sov_laundry_df, sov_wastewater_df], ignore_index=True)
+sov_df = pd.concat([sov_branded_df, sov_heating_df, sov_laundry_df, sov_wastewater_df], ignore_index=True)
 
-    keyword_distribution = pd.read_csv(txt.FILES_LOCATION + txt.kwd_dist_file_name)
+keyword_distribution = pd.read_csv(txt.FILES_LOCATION + txt.kwd_dist_file_name)
 
-    data = pd.read_parquet(txt.FILES_LOCATION + txt.data_file_name)
-    kw_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.kw_rd_data_file_name)
-    rd_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.rd_rd_data_file_name)
+data = pd.read_parquet(txt.FILES_LOCATION + txt.data_file_name)
+kw_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.kw_rd_data_file_name)
+rd_rd_data = pd.read_csv(txt.FILES_LOCATION + txt.rd_rd_data_file_name)
 
 # ####################### HEADINGS / SUBTITLES #########################################################################
 # Headings/introduction copy
-with st.container():
-    st.info(txt.info_message)
-    st.markdown(
+#with st.container():
+st.info(txt.info_message)
+st.markdown(
         '<h1 style=" ' + sty.style_string + ' ">' + txt.client_industry + ': <br> Machine Learning Factor Analysis </h1>',
         unsafe_allow_html=True)
-    st.markdown('<h4 style=" ' + sty.style_string + ' "> Overview </h4>',
+st.markdown('<h4 style=" ' + sty.style_string + ' "> Overview </h4>',
                 unsafe_allow_html=True)
-    st.markdown(txt.header_paragraph1, unsafe_allow_html=True)
-    st.markdown(txt.header_paragraph2, unsafe_allow_html=True)
+st.markdown(txt.header_paragraph1, unsafe_allow_html=True)
+st.markdown(txt.header_paragraph2, unsafe_allow_html=True)
 
 # ######################################################## NAVIGATION MENU #############################################
 with st.sidebar:
@@ -88,10 +72,7 @@ with st.sidebar:
 
 # ########################################################## SHARE OF VOICE ############################################
 st.markdown('<h4 style=' + sty.style_string + '> Share of Voice </h4>', unsafe_allow_html=True)
-
-with st.expander("Click to Expand/Collapse", expanded=st.session_state['sov_expander_state']):
-    # st.session_state['sov_expander_state'] = True
-
+with st.expander("Click to Expand/Collapse"):
     st.markdown(txt.sov_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.sov_paragraph2, unsafe_allow_html=True)
 
@@ -114,8 +95,7 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['sov_expa
 # ######################################################## KEYWORD DISTRIBUTION  #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Distribution </h4>', unsafe_allow_html=True)
 
-with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_distribution_state']):
-    # st.session_state['kwd_distribution_state'] = True
+with st.expander("Click to Expand/Collapse"):
 
     # READING KWD Distribution Data - START
     keyword_distribution['company_total'] = keyword_distribution.groupby(['Company'])['group_total'].transform('sum')
@@ -160,55 +140,50 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_dist
 
 # ########################################################## KEYWORD CLUSTERING #######################################
 st.markdown('<h4 style=' + sty.style_string + '> Keyword Clustering </h4>', unsafe_allow_html=True)
-with st.expander("Click to Expand/Collapse", expanded=st.session_state['kwd_clustering_state']):
+with st.expander("Click to Expand/Collapse"):
+    #with st.container():  # text
+    st.markdown(txt.kwd_clustering_paragraph1, unsafe_allow_html=True)
+    st.markdown(txt.kwd_clustering_paragraph2, unsafe_allow_html=True)
+    st.markdown(txt.kwd_clustering_paragraph3, unsafe_allow_html=True)
+    st.markdown(txt.kwd_clustering_paragraph4, unsafe_allow_html=True)
 
-    with st.container():  # text
-        st.markdown(txt.kwd_clustering_paragraph1, unsafe_allow_html=True)
-        st.markdown(txt.kwd_clustering_paragraph2, unsafe_allow_html=True)
-        st.markdown(txt.kwd_clustering_paragraph3, unsafe_allow_html=True)
-        st.markdown(txt.kwd_clustering_paragraph4, unsafe_allow_html=True)
-
-    with st.container():
-        data_no999 = data
-        data_no999 = data_no999[data_no999['Volume'] > 0]  # Filtering keywords with volume 0
+    #with st.container():
+    data_no999 = data
+    data_no999 = data_no999[data_no999['Volume'] > 0]  # Filtering keywords with volume 0
         # data_no999 = data[-(data['Cluster ID'] == 999)]  # Remove "local" 999 cluster from data for this section
-        cluster_names_df = func.get_cluster_names(data_no999, txt.exceptions_cluster_number, txt.exceptions_cluster_names)
+    cluster_names_df = func.get_cluster_names(data_no999, txt.exceptions_cluster_number, txt.exceptions_cluster_names)
         # cluster_label_list = list(data_no999['Cluster'].unique())
-        cluster_label_list = list(cluster_names_df['Keyword'].unique())
+    cluster_label_list = list(cluster_names_df['Keyword'].unique())
 
         # cluster_list.sort()
-        selected_cluster_name_shap = st.selectbox("Select a Keyword Cluster", cluster_label_list, key='cluster_box_shap_kwc',
+    selected_cluster_name_shap = st.selectbox("Select a Keyword Cluster", cluster_label_list, key='cluster_box_shap_kwc',
                                              index=0)  # Add a dropdown element
-
         # selected_cluster_shap = int(selected_cluster_shap)
-        df_selected_cluster = data_no999.copy()
+    df_selected_cluster = data_no999.copy()
 
-        selected_cluster_shap = cluster_names_df[cluster_names_df['Keyword'] == selected_cluster_name_shap]['Cluster'].values[0]
+    selected_cluster_shap = cluster_names_df[cluster_names_df['Keyword'] == selected_cluster_name_shap]['Cluster'].values[0]
 
-        df_selected_cluster = df_selected_cluster[df_selected_cluster['Cluster'] == selected_cluster_shap]  # Filter by selected cluster
+    df_selected_cluster = df_selected_cluster[df_selected_cluster['Cluster'] == selected_cluster_shap]  # Filter by selected cluster
 
         # Display keywords in the cluster
-        st.markdown('<p style=' + sty.style_string + '> <b> Keywords in this Cluster (Desc. by Search Volume) </b> </p>', unsafe_allow_html=True)
+    st.markdown('<p style=' + sty.style_string + '> <b> Keywords in this Cluster (Desc. by Search Volume) </b> </p>', unsafe_allow_html=True)
 
-        volume_keywords_in_this_cluster = df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna()
-        volume_keywords_in_this_cluster = pd.DataFrame(volume_keywords_in_this_cluster)
-        st.dataframe(volume_keywords_in_this_cluster.style.format("{0:,.0f}"))
+    volume_keywords_in_this_cluster = df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna()
+    volume_keywords_in_this_cluster = pd.DataFrame(volume_keywords_in_this_cluster)
+    st.dataframe(volume_keywords_in_this_cluster.style.format("{0:,.0f}"))
 
-        cluster_msv_value = sum(df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna())
-        st.markdown(
+    cluster_msv_value = sum(df_selected_cluster.groupby(by='Keyword')['Volume'].max().sort_values(ascending=False).dropna())
+    st.markdown(
             '<p style=' + sty.style_string + '>' + 'The monthly search volume (MSV) for this cluster is <b>' + "{0:,.0f}".format(cluster_msv_value) + '</b>.' + '</p>',
             unsafe_allow_html=True)
 
-        st.markdown(txt.kwd_clustering_paragraph5, unsafe_allow_html=True)
+    st.markdown(txt.kwd_clustering_paragraph5, unsafe_allow_html=True)
 
-        selected_cluster_sov_fig = func.get_sov_barchart(df_selected_cluster)
+    selected_cluster_sov_fig = func.get_sov_barchart(df_selected_cluster)
 
-        st.markdown('<p style=' + sty.style_string + '> <b> Share of Voice in this Cluster </b> </p>',
+    st.markdown('<p style=' + sty.style_string + '> <b> Share of Voice in this Cluster </b> </p>',
                     unsafe_allow_html=True)
-        st.plotly_chart(selected_cluster_sov_fig, use_container_width=True, config=sty.plotly_config_dict)
-
-        #st.session_state['kwd_clustering_state'] = True
-        #st.session_state['srf_specific_clusters_state'] = False
+    st.plotly_chart(selected_cluster_sov_fig, use_container_width=True, config=sty.plotly_config_dict)
 
 # ############################################ REFERRING DOMAINS VS BACKLINKS ##########################################
 st.markdown('<h4 style=' + sty.style_string + '> Referring Domains </h4>', unsafe_allow_html=True)
@@ -236,7 +211,6 @@ with st.expander("Click to Expand/Collapse"):
 # ############################################ RANKING FACTORS IMPORTANCE - OVERALL ####################################
 st.markdown('<h4 style=' + sty.style_string + '> Ranking Factor Importance (Overall) </h4>', unsafe_allow_html=True)
 with st.expander("Click to Expand/Collapse"):
-
     st.markdown(txt.srf_overall_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.srf_overall_paragraph2, unsafe_allow_html=True)
     st.markdown(txt.srf_overall_paragraph3, unsafe_allow_html=True)
@@ -285,8 +259,7 @@ with st.expander("Click to Expand/Collapse"):
 st.markdown('<h4 style=' + sty.style_string + '> Ranking Factor Importance (Specific Clusters) </h4>',
             unsafe_allow_html=True)
 
-with st.expander("Click to Expand/Collapse", expanded=st.session_state['srf_specific_clusters_state']):
-
+with st.expander("Click to Expand/Collapse"):
     st.markdown(txt.srf_specific_clusters_paragraph1, unsafe_allow_html=True)
     st.markdown(txt.srf_specific_clusters_paragraph2, unsafe_allow_html=True)
     st.markdown(txt.srf_specific_clusters_paragraph3, unsafe_allow_html=True)
@@ -296,8 +269,6 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['srf_spec
     # selected_cluster_shap_sc = st.selectbox("Select a Keyword Cluster", cluster_label_list, index=0)  # Add a dropdown element
     selected_cluster_name_shap_sc = st.selectbox("Select a Keyword Cluster", cluster_label_list,
                                             index=0)  # Add a dropdown element
-    st.session_state['srf_specific_clusters_state'] = True
-    st.session_state['kwd_clustering_state'] = False
 
     selected_cluster_shap_sc = cluster_names_df[cluster_names_df['Keyword'] == selected_cluster_name_shap_sc]['Cluster'].values[0]
 
@@ -339,7 +310,6 @@ with st.expander("Click to Expand/Collapse", expanded=st.session_state['srf_spec
 
     feature_x_sc = st.selectbox("Select a Ranking Factor", list(top_10_shap_sc.index), key='ranking_factor_box_sc',
                                 index=0)  # Add a dropdown element
-
     feature_x_sc_shap = feature_x_sc + " SHAP"
     hover_data_sc = list(top_10_shap_sc.index)
 
