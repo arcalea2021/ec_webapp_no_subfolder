@@ -34,7 +34,7 @@ plt.rcParams["font.family"] = "AvenirBold"
 #with st.container():
 
 st.write(os.getcwd())
-os.chdir('/home/ubuntu/ec_webapp_no_subfolder/')
+#os.chdir('/home/ubuntu/ec_webapp_no_subfolder/')
 st.write(os.getcwd())
 
 sov_branded_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_branded_input_file_name)
