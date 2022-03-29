@@ -1,4 +1,5 @@
 # Load libraries
+import os
 import shap
 import warnings
 
@@ -31,6 +32,8 @@ plt.rcParams["font.family"] = "AvenirBold"
 
 # ##################### Reading Data ###################################################################################
 #with st.container():
+
+st.write(os.getcwd())
 
 sov_branded_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_branded_input_file_name)
 sov_heating_df = pd.read_csv(txt.FILES_LOCATION + txt.sov_heating_input_file_name)
