@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="561946cd-7e05-470f-a704-f979427ba8bd" name="Changes" comment="writing current wd to see what is going on">
-      <change beforePath="$PROJECT_DIR$/../ec_webapp_no_subfolder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ec_webapp_no_subfolder/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="561946cd-7e05-470f-a704-f979427ba8bd" name="Changes" comment="changing wd">
       <change beforePath="$PROJECT_DIR$/../ec_webapp_no_subfolder/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../ec_webapp_no_subfolder/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -205,7 +204,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1648573872403</updated>
-      <workItem from="1648573873734" duration="1016000" />
+      <workItem from="1648573873734" duration="1181000" />
     </task>
     <task id="LOCAL-00001" summary="removing data subfolder to test AWS deployment">
       <created>1648574162688</created>
@@ -228,7 +227,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648574622383</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="changing wd">
+      <created>1648574911406</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1648574911406</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,6 +257,7 @@
     </ignored-roots>
     <MESSAGE value="removing data subfolder to test AWS deployment" />
     <MESSAGE value="writing current wd to see what is going on" />
-    <option name="LAST_COMMIT_MESSAGE" value="writing current wd to see what is going on" />
+    <MESSAGE value="changing wd" />
+    <option name="LAST_COMMIT_MESSAGE" value="changing wd" />
   </component>
 </project>
