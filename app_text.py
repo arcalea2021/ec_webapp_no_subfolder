@@ -8,7 +8,7 @@ client_short_name = 'EC'
 client_industry = 'Industrial Water Treatment Solutions'  # Client industry here
 client_industry_for_title = 'Industrial Water Treatment Solutions'
 
-FILES_LOCATION = 'data/'
+FILES_LOCATION = ''
 
 # Files from pre-processing have the objective of reducing the data stored in the server and help app run faster
 client_full_set_shap_file_name = 'option4_full_set_shap.csv'
